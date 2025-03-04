@@ -1,9 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Button from '@mui/material/Button';
-
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NavBar from "./NavBar";
+import Homepage from './HomePage';
+import InputPage from './InputPage';
+import OutputPage from './OutputPage';
 
 
 function App() {
@@ -33,18 +36,24 @@ function App() {
 
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button onClick={makeRequest}>Make Request</Button>
-        <Button onClick={makePostRequest}>Make Post Request</Button>
-        <br/>
-        <p>{stateResponse}</p>
-      </header>
-    </div>
+    
+    <BrowserRouter>
+    <NavBar />
+      <Routes>
+        <Route path="/" element = {
+            <Homepage />
+          }>
+        </Route>
+        <Route path="/input" element = {
+            <InputPage />
+            }>
+        </Route>
+        <Route path="/output" element = {
+            <OutputPage />
+            }>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

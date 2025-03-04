@@ -27,7 +27,7 @@ pool = sqlalchemy.create_engine(
 @cross_origin()
 def hello():
     if request.method == "POST":
-        return {"message": "Posting..."}
+        return {"message": "Posting...", "id": request.json["id"], "name": request.json["name"]}
     elif request.method == "GET":
         return {"message": "Hello, World!"}
     else:
@@ -44,9 +44,13 @@ def create():
 @cross_origin()
 def insert():
     with pool.connect() as db_conn:
-        db_conn.execute(sqlalchemy.text("INSERT INTO test_table (id, name) VALUES (1, 'John')"))
+        id = request.json["id"]
+        name = request.json["name"]
+        query = f"INSERT INTO test_table (id, name) VALUES ({id}, '{name}')"
+        print("Query: ", query)
+        db_conn.execute(sqlalchemy.text(query))
         db_conn.commit()
-    return {"message": "Data inserted"}
+    return {"message": "Data inserted", "data": request.json}
 
 @app.route("/select", methods = ["GET"])
 @cross_origin()
